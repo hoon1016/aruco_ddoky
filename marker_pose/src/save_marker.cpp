@@ -71,27 +71,37 @@ void msgCallback(const visualization_msgs::Marker::ConstPtr&msg)
     pub = nh.advertise<geometry_msgs::Twist>("/turtle1/cmd_vel",100);
     geometry_msgs::Twist pub_msg;
 
-    if (point_x > 0)
+    if (point_x > 0.05)
     {
         ROS_INFO("turn right");
-
-        pub_msg.angular.z = 5;
-        pub.publish(pub_msg);
-    
-    }
-    else if (point_x < 0)
-    {
-        ROS_INFO("turn left");
         pub_msg.angular.z = -5;
         pub.publish(pub_msg);
     }
+    else if (point_x < -0.05)
+    {
+        ROS_INFO("turn left");
+        pub_msg.angular.z = 5;
+        pub.publish(pub_msg);
+    }
+    else if ((point_x <= 0.05) && (point_x >= -0.05))
+    {
+        ROS_INFO("stop turning");
+        pub_msg.angular.z = 0;
+        pub.publish(pub_msg);
+    }
+    
     if (point_z > 1)
     {
         ROS_INFO("Go foward");
         pub_msg.linear.x = 1;
         pub.publish(pub_msg);
     }
-    
+     if (point_z < 1)
+    {
+        ROS_INFO("backward");
+        pub_msg.linear.x = -1;
+        pub.publish(pub_msg);
+    }
 }
 
 int main(int argc, char **argv)
