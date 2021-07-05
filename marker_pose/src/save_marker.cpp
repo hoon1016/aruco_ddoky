@@ -1,10 +1,12 @@
 #include "ros/ros.h"
 #include "visualization_msgs/Marker.h"
+#include "geometry_msgs/Twist.h"
 
 #define _USE_MATH_DEFINES
 #include <cmath>
 #include <math.h>
 
+ros::Publisher pub;
 
 void msgCallback(const visualization_msgs::Marker::ConstPtr&msg)
 {   
@@ -65,18 +67,31 @@ void msgCallback(const visualization_msgs::Marker::ConstPtr&msg)
     ROS_INFO("pitch = %f", pitch);
     ROS_INFO("yaw = %f", yaw);
 
+    ros::NodeHandle nh;    
+    pub = nh.advertise<geometry_msgs::Twist>("/turtle1/cmd_vel",100);
+    geometry_msgs::Twist pub_msg;
+
     if (point_x > 0)
     {
         ROS_INFO("turn right");
+
+        pub_msg.angular.z = 5;
+        pub.publish(pub_msg);
+    
     }
-    else
+    else if (point_x < 0)
     {
         ROS_INFO("turn left");
+        pub_msg.angular.z = -5;
+        pub.publish(pub_msg);
     }
-    if (point_z > 0)
+    if (point_z > 1)
     {
         ROS_INFO("Go foward");
+        pub_msg.linear.x = 1;
+        pub.publish(pub_msg);
     }
+    
 }
 
 int main(int argc, char **argv)
@@ -84,8 +99,8 @@ int main(int argc, char **argv)
 	ros::init(argc,argv,"save_marker");
 	
 	ros::NodeHandle nh;
-	
-	ros::Subscriber sub = nh.subscribe("/aruco_single/marker",10,msgCallback);	
+
+    ros::Subscriber sub = nh.subscribe("/aruco_single/marker",10,msgCallback);	
 
 	ros::spin();
 
