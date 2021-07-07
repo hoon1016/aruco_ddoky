@@ -25,16 +25,16 @@ void msgCallback(const visualization_msgs::Marker::ConstPtr&msg)
     double ori_z = msg->pose.orientation.z;
     double ori_w = msg->pose.orientation.w;
     double roll, pitch, yaw;
-    if ((sleep_cnt > 10)||((sleep_cnt == 0)&&(id==3)))
+    
+    if (sleep_cnt > 10)
     {
         sleep_cnt = 0;
         id = 0;
-        point_z = 1;
+        // point_z = 1;
         //for문 쓰면 어떨까
-        
         pub_msg.linear.x = 1;
         pub.publish(pub_msg);
-        ROS_INFO("ssssssssssssssssssssssssss");
+        ROS_INFO("ssssssssssssssssssssssssss");        
     }
 
     // struct Quaternion {
@@ -118,18 +118,6 @@ void msgCallback(const visualization_msgs::Marker::ConstPtr&msg)
                     pub_msg.linear.x = 0;
                     pub_msg.angular.z = 0;
                     pub.publish(pub_msg);
-                    // sleep_cnt++;
-                    // if (sleep_cnt > 100)
-                    // {
-                    //     sleep_cnt = 0;
-                    //     id = 3;
-                    //     point_z = 1;
-                    //     //for문 쓰면 어떨까
-                        
-                    //     pub_msg.linear.x = 1;
-                    //     pub.publish(pub_msg);
-                    //     ROS_INFO("ssssssssssssssssssssssssss");
-                    // }
                 }
                 else
                 {
