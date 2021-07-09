@@ -32,7 +32,8 @@
         <param name="corner_refinement"  value="$(arg corner_refinement)" />
     </node>
 
-	<node pkg="marker_pose" type="save_marker" name="save_marker" output="screen" />
+	<!--<node pkg="marker_pose" type="save_marker" name="save_marker" output="screen" />-->
 	<node pkg="turtlesim" type="turtlesim_node" name="turtlesim_node" />
+    <node pkg="marker_pose" type="save_marker" name="save_marker" output="screen" />
 </launch>
 
